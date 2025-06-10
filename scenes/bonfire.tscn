@@ -1,0 +1,89 @@
+[gd_scene load_steps=13 format=3 uid="uid://dnsguy3kgc8t6"]
+
+[ext_resource type="Texture2D" uid="uid://b1vx7ip83pbgi" path="res://assets/loops/burning_loop_2.png" id="1_jmgxe"]
+[ext_resource type="Script" path="res://scripts/bonfire.gd" id="2_4qoct"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5roun"]
+atlas = ExtResource("1_jmgxe")
+region = Rect2(0, 0, 20, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvn4i"]
+atlas = ExtResource("1_jmgxe")
+region = Rect2(20, 0, 20, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_40y6o"]
+atlas = ExtResource("1_jmgxe")
+region = Rect2(40, 0, 20, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xjhol"]
+atlas = ExtResource("1_jmgxe")
+region = Rect2(60, 0, 20, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqr6t"]
+atlas = ExtResource("1_jmgxe")
+region = Rect2(80, 0, 20, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgim8"]
+atlas = ExtResource("1_jmgxe")
+region = Rect2(100, 0, 20, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sjiok"]
+atlas = ExtResource("1_jmgxe")
+region = Rect2(120, 0, 20, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ccuix"]
+atlas = ExtResource("1_jmgxe")
+region = Rect2(140, 0, 20, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0qbr5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5roun")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rvn4i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_40y6o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xjhol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rqr6t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgim8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sjiok")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ccuix")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a5y7l"]
+radius = 15.0
+
+[node name="Bonfire" type="Node2D"]
+script = ExtResource("2_4qoct")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_0qbr5")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="InteractionArea" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("CircleShape2D_a5y7l")
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_interaction_area_body_exited"]

@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://e6f4yt5xtklj"]
+
+[ext_resource type="Script" path="res://scripts/ui.gd" id="1_sl40e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lr60c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8r727"]
+bg_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htwb8"]
+bg_color = Color(0.333333, 0.333333, 0.333333, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4mcod"]
+bg_color = Color(0, 1, 0, 1)
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource("1_sl40e")
+
+[node name="HUD" type="MarginContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 58.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+
+[node name="Bars" type="VBoxContainer" parent="HUD"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="HealthBar" type="ProgressBar" parent="HUD/Bars"]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_lr60c")
+theme_override_styles/fill = SubResource("StyleBoxFlat_8r727")
+value = 100.0
+
+[node name="StaminaBar" type="ProgressBar" parent="HUD/Bars"]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_htwb8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4mcod")
+value = 100.0
+
+[node name="SoulsLabel" type="Label" parent="HUD/Bars"]
+layout_mode = 2
+text = "Souls : 0"

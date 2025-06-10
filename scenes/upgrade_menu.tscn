@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw46vw43xk0fy"]
+
+[ext_resource type="Script" path="res://scripts/upgrade_menu.gd" id="1_wly71"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpi60"]
+bg_color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="UpgradeMenu" type="CanvasLayer"]
+script = ExtResource("1_wly71")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 480.0
+offset_top = 320.0
+offset_right = 780.0
+offset_bottom = 720.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fpi60")
+
+[node name="Menu" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 103.0
+theme_override_constants/separation = 10
+
+[node name="SoulsLabel" type="Label" parent="Panel/Menu"]
+layout_mode = 2
+text = "Souls: 0"
+
+[node name="HealthButton" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+text = "Upgrade Health (10 Souls)"
+
+[node name="StaminaButton" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+text = "Upgrade Stamina (10 Souls)"
+
+[node name="AttackButton" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+text = "Upgrade Attack (10 Souls)"
+
+[node name="SaveButton" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+text = "Save Game"
+
+[node name="CloseButton" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+text = "Close"
+
+[connection signal="pressed" from="Panel/Menu/HealthButton" to="." method="_on_health_button_pressed"]
+[connection signal="pressed" from="Panel/Menu/StaminaButton" to="." method="_on_stamina_button_pressed"]
+[connection signal="pressed" from="Panel/Menu/AttackButton" to="." method="_on_attack_button_pressed"]
+[connection signal="pressed" from="Panel/Menu/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="Panel/Menu/CloseButton" to="." method="_on_close_button_pressed"]
