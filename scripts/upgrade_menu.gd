@@ -1,60 +1,56 @@
 extends CanvasLayer
 
-@onready var souls_label = $Panel/Menu/SoulsLabel
-@onready var health_button = $Panel/Menu/HealthButton
-@onready var stamina_button = $Panel/Menu/StaminaButton
-@onready var attack_button = $Panel/Menu/AttackButton
+signal menu_closed
+
+@onready var souls_label = $Panel/VBoxContainer/SoulsLabel
+@onready var attack_button = $Panel/VBoxContainer/AttackButton
+@onready var dash_button = $Panel/VBoxContainer/DashButton
+@onready var health_button = $Panel/VBoxContainer/HealthButton
+@onready var close_button = $Panel/VBoxContainer/CloseButton
+
+const UPGRADE_COST = 10
 
 var player = null
 
 func _ready() -> void:
-	hide()
-
-func open(player_ref: Node2D) -> void:
-	player = player_ref
-	update_souls()
-	show()
-	get_tree().paused = true
-	print("Upgrade menu opened")
-
-func update_souls() -> void:
 	if player:
-		souls_label.text = "Souls: %d" % player.souls
+		update_souls_label()
+		attack_button.pressed.connect(_on_attack_button_pressed)
+		dash_button.pressed.connect(_on_dash_button_pressed)
+		health_button.pressed.connect(_on_health_button_pressed)
+		close_button.pressed.connect(_on_close_button_pressed)
 
-func _on_health_button_pressed() -> void:
-	if player and player.souls >= 10:
-		player.souls -= 10
-		player.max_health += 1
-		player.health = player.max_health
-		player.update_ui()
-		update_souls()
-		print("Health upgraded, max_health:", player.max_health)
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		_on_close_button_pressed()
 
-func _on_stamina_button_pressed() -> void:
-	if player and player.souls >= 10:
-		player.souls -= 10
-		player.max_stamina += 20
-		player.stamina = player.max_stamina
-		player.update_ui()
-		update_souls()
-		print("Stamina upgraded, max_stamina:", player.max_stamina)
+func set_player(p: Node) -> void:
+	player = p
+	if is_inside_tree():
+		update_souls_label()
+
+func update_souls_label() -> void:
+	if player and souls_label:
+		souls_label.text = "Souls: %d" % player.get_souls()
 
 func _on_attack_button_pressed() -> void:
-	if player and player.souls >= 10:
-		player.souls -= 10
-		player.attack_damage += 1
-		player.update_ui()
-		update_souls()
-		print("Attack upgraded, attack_damage:", player.attack_damage)
+	if player and player.get_souls() >= UPGRADE_COST:
+		player.upgrade_stat("attack")
+		player.add_souls(-UPGRADE_COST)
+		update_souls_label()
 
-func _on_save_button_pressed() -> void:
-	if player:
-		player.save_game()
-		print("Game saved")
+func _on_dash_button_pressed() -> void:
+	if player and player.get_souls() >= UPGRADE_COST:
+		player.upgrade_stat("dash_stamina")
+		player.add_souls(-UPGRADE_COST)
+		update_souls_label()
+
+func _on_health_button_pressed() -> void:
+	if player and player.get_souls() >= UPGRADE_COST:
+		player.upgrade_stat("health")
+		player.add_souls(-UPGRADE_COST)
+		update_souls_label()
 
 func _on_close_button_pressed() -> void:
-	hide()
-	get_tree().paused = false
-	if player:
-		player.close_upgrade_menu()
-		print("Upgrade menu closed")
+	emit_signal("menu_closed")
+	queue_free()

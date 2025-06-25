@@ -7,17 +7,21 @@ const DASH_DURATION = 0.2
 const ATTACK_DURATION = 0.5
 const INVULNERABILITY_DURATION = 1.0
 const MAX_STAMINA = 100.0
-const DASH_STAMINA_COST = 50.0
 const STAMINA_REGEN_RATE = 50.0
+const BASE_ATTACK_DAMAGE = 1.0
+const BASE_DASH_STAMINA_COST = 50.0
+const BASE_MAX_HEALTH = 3
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var attack_hitbox = $AttackHitbox/CollisionShape2D
 @onready var ui = get_node("/root/Game/UI")
 
 var health = 3
-var max_health = 3
+var max_health = BASE_MAX_HEALTH
 var stamina = MAX_STAMINA
 var souls = 0
+var attack_damage = BASE_ATTACK_DAMAGE
+var dash_stamina_cost = BASE_DASH_STAMINA_COST
 var is_dashing = false
 var dash_timer = 0.0
 var is_attacking = false
@@ -29,20 +33,10 @@ var is_at_bonfire = false
 var current_bonfire = null
 
 func _ready() -> void:
-	if not animated_sprite:
-		print("ERROR: AnimatedSprite2D node not found")
-	if not animated_sprite.sprite_frames.has_animation("hurt"):
-		print("ERROR: 'hurt' animation missing")
-	if not animated_sprite.sprite_frames.has_animation("death"):
-		print("ERROR: 'death' animation missing")
 	if ui:
-		print("UI found at /root/Game/UI, setting initial values")
 		ui.set_health(health, max_health)
 		ui.set_stamina(stamina, MAX_STAMINA)
 		ui.set_souls(souls)
-	else:
-		print("ERROR: UI node not found at /root/Game/UI")
-	# Defer load_game to ensure scene tree is ready
 	call_deferred("load_game")
 
 func _physics_process(delta: float) -> void:
@@ -71,10 +65,10 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
-	if Input.is_action_just_pressed("dash") and not is_dashing and not is_attacking and stamina >= DASH_STAMINA_COST:
+	if Input.is_action_just_pressed("dash") and not is_dashing and not is_attacking and stamina >= dash_stamina_cost:
 		is_dashing = true
 		dash_timer = DASH_DURATION
-		stamina -= DASH_STAMINA_COST
+		stamina -= dash_stamina_cost
 		if ui:
 			ui.set_stamina(stamina, MAX_STAMINA)
 
@@ -137,23 +131,55 @@ func take_damage(amount: int) -> void:
 		if health <= 0:
 			animated_sprite.play("death")
 			set_physics_process(false)
-			print("Player died")
 		else:
 			is_hurt = true
 			animated_sprite.play("hurt")
 			is_invulnerable = true
 			invulnerability_timer = INVULNERABILITY_DURATION
 			animated_sprite.modulate.a = 0.5
-			print("Player took damage, health:", health)
 
 func add_souls(amount: int) -> void:
 	souls += amount
 	if ui:
 		ui.set_souls(souls)
-		print("UI updated with souls:", souls)
-	else:
-		print("ERROR: UI not found during add_souls")
-	print("Souls gained:", amount, "Total souls:", souls)
+
+func get_souls() -> int:
+	return souls
+
+func upgrade_stat(stat: String) -> void:
+	match stat:
+		"attack":
+			attack_damage += 0.5
+		"dash_stamina":
+			dash_stamina_cost = max(dash_stamina_cost - 5.0, 10.0)
+		"health":
+			max_health += 1
+			health += 1
+			if ui:
+				ui.set_health(health, max_health)
+
+func get_stat_value(stat: String) -> float:
+	match stat:
+		"attack":
+			return attack_damage
+		"dash_stamina":
+			return dash_stamina_cost
+		"health":
+			return max_health
+	return 0.0
+
+func reset_stats() -> void:
+	health = BASE_MAX_HEALTH
+	max_health = BASE_MAX_HEALTH
+	stamina = MAX_STAMINA
+	souls = 0
+	attack_damage = BASE_ATTACK_DAMAGE
+	dash_stamina_cost = BASE_DASH_STAMINA_COST
+	global_position = Vector2(340, -47)
+	if ui:
+		ui.set_health(health, max_health)
+		ui.set_stamina(stamina, MAX_STAMINA)
+		ui.set_souls(souls)
 
 func save_game() -> void:
 	health = max_health
@@ -162,30 +188,24 @@ func save_game() -> void:
 		ui.set_health(health, max_health)
 		ui.set_stamina(stamina, MAX_STAMINA)
 		ui.set_souls(souls)
-		print("UI updated during save: souls =", souls)
-	else:
-		print("ERROR: UI not found during save")
 	var save_data = {
 		"health": health,
 		"max_health": max_health,
 		"stamina": stamina,
 		"souls": souls,
-		"position": [global_position.x, global_position.y]
+		"position": [global_position.x, global_position.y],
+		"attack_damage": attack_damage,
+		"dash_stamina_cost": dash_stamina_cost
 	}
 	var dir = DirAccess.open(OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS))
 	var subfolder = "MyPlatformer"
 	var save_path = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS).path_join(subfolder).path_join("savegame.save")
 	if not dir.dir_exists(subfolder):
 		dir.make_dir(subfolder)
-		print("Created directory:", OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS).path_join(subfolder))
-	print("Saving to path:", save_path)
 	var file = FileAccess.open(save_path, FileAccess.WRITE)
 	if file:
 		file.store_string(JSON.stringify(save_data))
 		file.close()
-		print("Game saved at position:", global_position, "health:", health, "stamina:", stamina, "souls:", souls)
-	else:
-		print("ERROR: Failed to save game, error:", FileAccess.get_open_error())
 
 func load_game() -> void:
 	var save_path = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS).path_join("MyPlatformer").path_join("savegame.save")
@@ -197,31 +217,20 @@ func load_game() -> void:
 			file.close()
 			if error == OK:
 				var data = json.data
-				print("Loaded data:", data)
 				health = data.get("health", 3)
-				max_health = data.get("max_health", 3)
+				max_health = data.get("max_health", BASE_MAX_HEALTH)
 				stamina = data.get("stamina", MAX_STAMINA)
 				souls = data.get("souls", 0)
+				attack_damage = data.get("attack_damage", BASE_ATTACK_DAMAGE)
+				dash_stamina_cost = data.get("dash_stamina_cost", BASE_DASH_STAMINA_COST)
 				var pos = data.get("position", [340, -47])
 				global_position = Vector2(pos[0], pos[1])
 				if ui:
 					ui.set_health(health, max_health)
 					ui.set_stamina(stamina, MAX_STAMINA)
 					ui.set_souls(souls)
-					print("UI updated after load: souls =", souls)
-				else:
-					print("ERROR: UI not available during load")
-				print("Game loaded, health:", health, "position:", global_position, "souls:", souls)
-			else:
-				print("ERROR: JSON parse error:", json.get_error_message())
-		else:
-			print("ERROR: Failed to load game, error:", FileAccess.get_open_error())
 	else:
-		print("No save file found at:", save_path)
-		global_position = Vector2(340, -47)
-		if ui:
-			ui.set_souls(souls)
-			print("UI updated for no save: souls =", souls)
+		reset_stats()
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animated_sprite.animation == "hurt" and health > 0:
@@ -231,5 +240,4 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		is_attacking = false
 		attack_hitbox.disabled = true
 	if animated_sprite.animation == "death":
-		print("Player removed after death animation")
-		#queue_free()
+		pass

@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://c1pjnwvydgrcv"]
+[gd_scene load_steps=10 format=3 uid="uid://c1pjnwvydgrcv"]
 
 [ext_resource type="PackedScene" uid="uid://bc6fpu4ipgqbb" path="res://scenes/char.tscn" id="1_k3l4v"]
 [ext_resource type="Texture2D" uid="uid://bdsx7sfy3736u" path="res://assets/world_tileset.png" id="2_eu7r0"]
 [ext_resource type="Script" path="res://scripts/camera_2d.gd" id="2_wal6s"]
 [ext_resource type="PackedScene" uid="uid://d1py136bejhfl" path="res://scenes/kroco.tscn" id="4_5r80h"]
 [ext_resource type="PackedScene" uid="uid://e6f4yt5xtklj" path="res://scenes/ui.tscn" id="5_bpx5x"]
-[ext_resource type="PackedScene" uid="uid://bw46vw43xk0fy" path="res://scenes/upgrade_menu.tscn" id="6_8bb4a"]
 [ext_resource type="PackedScene" uid="uid://dnsguy3kgc8t6" path="res://scenes/bonfire.tscn" id="7_2t86i"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_rtdwh"]
@@ -180,8 +179,6 @@ position = Vector2(-132, -46)
 position = Vector2(501, -48)
 
 [node name="UI" parent="." instance=ExtResource("5_bpx5x")]
-
-[node name="UpgradeMenu" parent="." instance=ExtResource("6_8bb4a")]
 
 [node name="AnimatedSprite2D" parent="." instance=ExtResource("7_2t86i")]
 position = Vector2(1121, 48.2)
