@@ -16,7 +16,7 @@ const BASE_MAX_HEALTH = 3
 @onready var attack_hitbox = $AttackHitbox/CollisionShape2D
 @onready var ui = get_node("/root/Game/UI")
 
-var health = 3
+var health = BASE_MAX_HEALTH
 var max_health = BASE_MAX_HEALTH
 var stamina = MAX_STAMINA
 var souls = 0
@@ -31,13 +31,46 @@ var invulnerability_timer = 0.0
 var is_hurt = false
 var is_at_bonfire = false
 var current_bonfire = null
+var is_new_game = true
+var pause_menu = null
+var death_menu = null
 
 func _ready() -> void:
 	if ui:
 		ui.set_health(health, max_health)
 		ui.set_stamina(stamina, MAX_STAMINA)
 		ui.set_souls(souls)
-	call_deferred("load_game")
+	call_deferred("_setup_menus")
+	if is_new_game:
+		reset_stats()
+	else:
+		load_game()
+
+func _setup_menus() -> void:
+	var pause_menu_scene = preload("res://scenes/pause_menu.tscn")
+	pause_menu = pause_menu_scene.instantiate()
+	if get_parent():
+		get_parent().add_child(pause_menu)
+		print("Pause menu added to scene tree at:", pause_menu.get_path())
+	else:
+		print("Error: Char has no parent for pause menu")
+	var death_menu_scene = preload("res://scenes/game_over.tscn")
+	death_menu = death_menu_scene.instantiate()
+	if get_parent():
+		get_parent().add_child(death_menu)
+		print("Death menu added to scene tree at:", death_menu.get_path())
+	else:
+		print("Error: Char has no parent for death menu")
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and event is InputEventKey and health > 0:
+		if pause_menu and pause_menu.is_inside_tree():
+			if pause_menu.visible:
+				pause_menu.hide_menu()
+			else:
+				pause_menu.show_menu()
+		else:
+			print("Error: Pause menu not ready or not in scene tree")
 
 func _physics_process(delta: float) -> void:
 	if is_invulnerable:
@@ -180,6 +213,8 @@ func reset_stats() -> void:
 		ui.set_health(health, max_health)
 		ui.set_stamina(stamina, MAX_STAMINA)
 		ui.set_souls(souls)
+	set_physics_process(true)
+	animated_sprite.play("idle")
 
 func save_game() -> void:
 	health = max_health
@@ -206,6 +241,9 @@ func save_game() -> void:
 	if file:
 		file.store_string(JSON.stringify(save_data))
 		file.close()
+		print("Game saved to:", save_path)
+	else:
+		print("Error: Failed to save game")
 
 func load_game() -> void:
 	var save_path = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS).path_join("MyPlatformer").path_join("savegame.save")
@@ -217,7 +255,7 @@ func load_game() -> void:
 			file.close()
 			if error == OK:
 				var data = json.data
-				health = data.get("health", 3)
+				health = data.get("health", BASE_MAX_HEALTH)
 				max_health = data.get("max_health", BASE_MAX_HEALTH)
 				stamina = data.get("stamina", MAX_STAMINA)
 				souls = data.get("souls", 0)
@@ -229,7 +267,20 @@ func load_game() -> void:
 					ui.set_health(health, max_health)
 					ui.set_stamina(stamina, MAX_STAMINA)
 					ui.set_souls(souls)
+				set_physics_process(true)
+				animated_sprite.play("idle")
+				is_invulnerable = false
+				is_hurt = false
+				is_attacking = false
+				attack_hitbox.disabled = true
+				animated_sprite.modulate.a = 1.0
+				print("Game loaded from:", save_path)
+			else:
+				print("Error: Failed to parse save file")
+		else:
+			print("Error: Failed to open save file")
 	else:
+		print("Error: Save file not found, resetting stats")
 		reset_stats()
 
 func _on_animated_sprite_2d_animation_finished() -> void:
@@ -240,4 +291,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		is_attacking = false
 		attack_hitbox.disabled = true
 	if animated_sprite.animation == "death":
-		pass
+		if death_menu and death_menu.is_inside_tree():
+			death_menu.show_menu(self)
+		else:
+			print("Error: Death menu not ready or not in scene tree")

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://1saibo2qnwj"]
+[gd_scene load_steps=3 format=3 uid="uid://1saibo2qnwj"]
 
 [ext_resource type="Script" path="res://scripts/splash_screen.gd" id="1_lusyd"]
+[ext_resource type="Texture2D" uid="uid://ch2bk3r74s74e" path="res://assets/logo.png" id="2_831be"]
 
 [node name="SplashScreen" type="CanvasLayer"]
 script = ExtResource("1_lusyd")
@@ -13,17 +14,16 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="TitileLabel" type="Label" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -58.5
-offset_top = -11.5
-offset_right = 58.5
-offset_bottom = 11.5
+offset_left = -94.5
+offset_top = -120.5
+offset_right = 94.5
+offset_bottom = 120.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 48
-text = "Shadow Forges"
+texture = ExtResource("2_831be")

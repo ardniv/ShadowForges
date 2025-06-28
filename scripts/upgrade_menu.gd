@@ -19,10 +19,7 @@ func _ready() -> void:
 		dash_button.pressed.connect(_on_dash_button_pressed)
 		health_button.pressed.connect(_on_health_button_pressed)
 		close_button.pressed.connect(_on_close_button_pressed)
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		_on_close_button_pressed()
+		close_button.grab_focus()
 
 func set_player(p: Node) -> void:
 	player = p
