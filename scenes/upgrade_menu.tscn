@@ -1,6 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://bh31mcsfxr2t0"]
+[gd_scene load_steps=9 format=3 uid="uid://bh31mcsfxr2t0"]
 
 [ext_resource type="Script" path="res://scripts/upgrade_menu.gd" id="1_7lnal"]
+[ext_resource type="Texture2D" uid="uid://b2x53nrxto4bs" path="res://assets/bgPanel.png" id="2_oc44v"]
+[ext_resource type="Texture2D" uid="uid://d2ccjggvwyqrp" path="res://assets/button.png" id="3_ab5c7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1aqmp"]
+texture = ExtResource("2_oc44v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ectx"]
+texture = ExtResource("3_ab5c7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qni55"]
+texture = ExtResource("3_ab5c7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t3ycn"]
+texture = ExtResource("3_ab5c7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ur71i"]
+texture = ExtResource("3_ab5c7")
 
 [node name="UpgradeMenu" type="CanvasLayer"]
 script = ExtResource("1_7lnal")
@@ -17,31 +34,49 @@ offset_right = 150.0
 offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_1aqmp")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -195.0
+offset_right = 125.0
+offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="SoulsLabel" type="Label" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Souls: 0"
+horizontal_alignment = 1
+uppercase = true
 
 [node name="AttackButton" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_3ectx")
 text = "Upgrade Attack 10 Souls"
 
 [node name="DashButton" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_qni55")
 text = "Upgrade Dash Stamina 10 Souls"
 
 [node name="HealthButton" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_t3ycn")
 text = "Upgrade Health 10 Souls"
 
 [node name="CloseButton" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_ur71i")
 text = "Close"

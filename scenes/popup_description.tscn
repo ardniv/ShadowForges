@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=3 uid="uid://1h8yxnwo6atl"]
+
+[ext_resource type="Texture2D" uid="uid://b2x53nrxto4bs" path="res://assets/bgPanel.png" id="1_hrhut"]
+[ext_resource type="Texture2D" uid="uid://dqxy3hjjj58mp" path="res://assets/xButton.png" id="2_2asc5"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nh0tn"]
+texture = ExtResource("1_hrhut")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k4i3j"]
+texture = ExtResource("2_2asc5")
+
+[node name="PopupDescription" type="CanvasLayer"]
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_nh0tn")
+
+[node name="Info" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "INFO"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -30.0
+offset_bottom = 30.0
+grow_horizontal = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_k4i3j")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 75.0
+offset_right = 730.0
+offset_bottom = 425.0
+text = "ALL ASSET GET FROM
+- Knight Sprite by aamatniekss : https://aamatniekss.itch.io/fantasy-knight-free-pixelart-animated-character
+
+- Skeleton Enemy Sprite by craftpix : https://craftpix.net/freebies/free-skeleton-pixel-art-sprite-sheets/
+
+- UI design template by toffeecraft : https://toffeecraft.itch.io/ui-user-interface-medieval ; https://toffeecraft.itch.io/ui-user-interface-pack-horror
+
+- Tileset World by szadiart : https://szadiart.itch.io/pixel-fantasy-caves
+
+- Bonfire Sprite by brullov : https://brullov.itch.io/fire-animation"

@@ -70,7 +70,12 @@ func _on_try_again_button_pressed() -> void:
 	if not player:
 		print("Error: Player reference is null in Try Again")
 		return
-	player.load_game()
+	if player.is_new_game:
+		player.reset_stats()
+		print("Try Again: Reset stats for new game")
+	else:
+		player.load_game()
+		print("Try Again: Loaded save game")
 	hide_menu()
 	print("Try Again button pressed")
 

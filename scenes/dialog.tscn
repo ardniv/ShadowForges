@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://636qutpgatb6"]
+
+[ext_resource type="Script" path="res://scripts/dialog.gd" id="1_g183f"]
+[ext_resource type="Texture2D" uid="uid://dxt3ucc1tkfii" path="res://assets/guide.png" id="2_x38um"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_npxvj"]
+bg_color = Color(0.6, 0.6, 0.6, 0.196078)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[node name="Dialog" type="CanvasLayer"]
+process_mode = 3
+layer = 10
+script = ExtResource("1_g183f")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_npxvj")
+
+[node name="Potrait" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -196.0
+offset_top = -255.0
+offset_right = -116.0
+offset_bottom = -175.0
+grow_vertical = 2
+scale = Vector2(7, 7)
+mouse_filter = 2
+texture = ExtResource("2_x38um")
+expand_mode = 1
+
+[node name="TextContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 164.0
+offset_right = 1100.0
+offset_bottom = 100.0
+
+[node name="NameLabel" type="Label" parent="Panel/TextContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Knight"
+
+[node name="DialogText" type="RichTextLabel" parent="Panel/TextContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "Placeholder dialog text."
+fit_content = true

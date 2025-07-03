@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://b7thk48hdxs7l"]
+[gd_scene load_steps=5 format=3 uid="uid://b7thk48hdxs7l"]
 
 [ext_resource type="Script" path="res://scripts/game_over.gd" id="1_g2ak3"]
+[ext_resource type="Texture2D" uid="uid://d2ccjggvwyqrp" path="res://assets/button.png" id="2_bwp0b"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hbbjt"]
+texture = ExtResource("2_bwp0b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pxin3"]
+texture = ExtResource("2_bwp0b")
 
 [node name="GameOver" type="CanvasLayer"]
 process_mode = 3
@@ -24,10 +31,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -60.0
-offset_top = -50.0
-offset_right = 60.0
-offset_bottom = 50.0
+offset_left = -100.0
+offset_top = -67.5
+offset_right = 100.0
+offset_bottom = 67.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -40,10 +47,14 @@ horizontal_alignment = 1
 
 [node name="TryAgainButton" type="Button" parent="MenuContainer"]
 process_mode = 3
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_hbbjt")
 text = "TRY AGAIN"
 
 [node name="MainMenuButton" type="Button" parent="MenuContainer"]
 process_mode = 3
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_pxin3")
 text = "MAIN MENU"

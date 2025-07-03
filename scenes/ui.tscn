@@ -27,14 +27,14 @@ layout_mode = 2
 theme_override_constants/separation = 5
 
 [node name="HealthBar" type="ProgressBar" parent="HUD/Bars"]
-custom_minimum_size = Vector2(150, 20)
+custom_minimum_size = Vector2(350, 20)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_lr60c")
 theme_override_styles/fill = SubResource("StyleBoxFlat_8r727")
 value = 100.0
 
 [node name="StaminaBar" type="ProgressBar" parent="HUD/Bars"]
-custom_minimum_size = Vector2(150, 20)
+custom_minimum_size = Vector2(350, 20)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_htwb8")
 theme_override_styles/fill = SubResource("StyleBoxFlat_4mcod")
@@ -43,3 +43,12 @@ value = 100.0
 [node name="SoulsLabel" type="Label" parent="HUD/Bars"]
 layout_mode = 2
 text = "Souls : 0"
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -92.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "PAUSE - ESC"
