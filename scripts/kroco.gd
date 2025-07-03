@@ -29,18 +29,6 @@ func _ready() -> void:
 		var shape_node = detection_area.get_node_or_null("CollisionShape2D")
 		if shape_node and shape_node.shape is CircleShape2D:
 			shape_node.shape.radius = DETECTION_RANGE
-		else:
-			print("ERROR: DetectionArea CollisionShape2D missing")
-	else:
-		print("ERROR: DetectionArea node missing")
-	if not attack_hitbox_shape:
-		print("ERROR: AttackHitbox shape missing")
-	if not animated_sprite.sprite_frames.has_animation("hurt"):
-		print("ERROR: 'hurt' animation missing")
-	if not animated_sprite.sprite_frames.has_animation("attack"):
-		print("ERROR: 'attack' animation missing")
-	if scale.x != 1:
-		print("WARNING: Enemy scale.x is not 1, may cause movement issues")
 
 func _physics_process(delta: float) -> void:
 	if is_dead or animated_sprite.animation == "hurt":
@@ -55,6 +43,9 @@ func _physics_process(delta: float) -> void:
 			animated_sprite.play("idle")
 		velocity.x = 0
 		return
+
+	if not is_on_floor():
+		velocity += get_gravity() * delta
 
 	if is_following and player and not is_attacking:
 		var distance_to_player = global_position.distance_to(player.global_position)
@@ -71,7 +62,6 @@ func _physics_process(delta: float) -> void:
 				start_attack()
 			else:
 				attack_cooldown -= delta
-		move_and_slide()
 	elif not is_following and not is_attacking:
 		var distance_to_initial = global_position.distance_to(initial_position)
 		if distance_to_initial > RETURN_THRESHOLD:
@@ -85,7 +75,8 @@ func _physics_process(delta: float) -> void:
 			velocity.x = 0
 			is_returning = false
 			animated_sprite.play("idle")
-		move_and_slide()
+
+	move_and_slide()
 
 func start_attack() -> void:
 	if attack_hitbox_shape and animated_sprite.sprite_frames.has_animation("attack"):
@@ -94,37 +85,33 @@ func start_attack() -> void:
 		attack_hitbox_shape.disabled = false
 		animated_sprite.play("attack")
 		attack_hitbox_shape.position.x = (30 if not animated_sprite.flip_h else -30)
-		print("Enemy attack started")
-	else:
-		print("ERROR: Cannot start attack")
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	if body.name == "Char" and body.collision_layer & (1 << (2-1)):
 		player = body
 		is_following = true
-		print("Player detected, following")
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	if body.name == "Char":
 		player = null
 		is_following = false
-		# print("Player left detection range")
 
 func _on_attack_hitbox_body_entered(body: Node2D) -> void:
 	if body.name == "Char" and is_attacking:
 		body.take_damage(1)
-		print("Player hit by enemy attack")
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.name == "AttackHitbox" and not is_dead:
-		health -= 1
-		print("Enemy hit, health:", health)
+		if area.get_parent().get_parent().has_method("get_stat_value"):
+			var damage = area.get_parent().get_parent().get_stat_value("attack")
+			health -= damage
+		else:
+			health -= 1
 		if health <= 0:
 			is_dead = true
 			animated_sprite.play("death")
 			if player:
 				player.add_souls(SOULS_REWARD)
-			print("Playing death animation")
 		else:
 			if animated_sprite.sprite_frames.has_animation("hurt"):
 				animated_sprite.play("hurt")
@@ -144,5 +131,4 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		animated_sprite.play("idle")
 		attack_cooldown = max(attack_cooldown, 0.5)
 	if animated_sprite.animation == "death":
-		print("Enemy removed after death animation")
 		queue_free()

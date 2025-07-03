@@ -1,0 +1,103 @@
+[gd_scene load_steps=12 format=3 uid="uid://lqhcemi04au7"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_iount"]
+[ext_resource type="Texture2D" uid="uid://brjww411udtcp" path="res://assets/bg.png" id="2_nof8l"]
+[ext_resource type="Texture2D" uid="uid://d2ccjggvwyqrp" path="res://assets/button.png" id="2_r25g8"]
+[ext_resource type="Texture2D" uid="uid://wxcya8ryahdq" path="res://assets/title.png" id="3_67v7s"]
+[ext_resource type="Texture2D" uid="uid://c7vail3knqdj2" path="res://assets/info.png" id="5_582m0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_igaw2"]
+texture = ExtResource("2_r25g8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_71ahk"]
+texture = ExtResource("2_r25g8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fe2wx"]
+texture = ExtResource("2_r25g8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rcke3"]
+texture = ExtResource("5_582m0")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kfh4v"]
+texture = ExtResource("5_582m0")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cutpf"]
+texture = ExtResource("5_582m0")
+
+[node name="MainMenu" type="CanvasLayer"]
+script = ExtResource("1_iount")
+
+[node name="BgPicture" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_nof8l")
+expand_mode = 1
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="TitlePicture" type="TextureRect" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_right = 180.0
+offset_bottom = 250.0
+grow_horizontal = 2
+texture = ExtResource("3_67v7s")
+expand_mode = 1
+
+[node name="MenuContainer" type="VBoxContainer" parent="."]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -552.0
+offset_top = -94.0
+offset_right = -152.0
+offset_bottom = 186.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="StartButton" type="Button" parent="MenuContainer"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_igaw2")
+text = "New Game"
+
+[node name="LoadButton" type="Button" parent="MenuContainer"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_71ahk")
+text = "Load Game"
+
+[node name="ExitButton" type="Button" parent="MenuContainer"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_fe2wx")
+text = "Exit"
+
+[node name="DescriptionButton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -67.0
+offset_top = -63.0
+offset_right = -25.0
+offset_bottom = -21.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_rcke3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_kfh4v")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cutpf")

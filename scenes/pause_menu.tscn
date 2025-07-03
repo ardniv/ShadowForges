@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=3 uid="uid://6typjg2fg5jf"]
+
+[ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1_wcwsi"]
+[ext_resource type="Texture2D" uid="uid://d2ccjggvwyqrp" path="res://assets/button.png" id="2_wuvcf"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4jwf1"]
+texture = ExtResource("2_wuvcf")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vn5ot"]
+texture = ExtResource("2_wuvcf")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ps8xo"]
+texture = ExtResource("2_wuvcf")
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 10
+script = ExtResource("1_wcwsi")
+
+[node name="Background" type="ColorRect" parent="."]
+process_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="MenuContainer" type="VBoxContainer" parent="."]
+process_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -105.0
+offset_right = 140.0
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="MenuContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="MenuContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_4jwf1")
+text = "RESUME"
+
+[node name="MainMenuButton" type="Button" parent="MenuContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_vn5ot")
+text = "MAIN MENU"
+
+[node name="QuitButton" type="Button" parent="MenuContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_ps8xo")
+text = "QUIT GAME
+"
+
+[node name="TextureButton" type="TextureButton" parent="MenuContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 3
+stretch_mode = 5
