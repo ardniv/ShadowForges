@@ -14,6 +14,8 @@ const BASE_MAX_HEALTH = 3
 const NEW_GAME_SPAWN_POSITION = Vector2(150, -95)
 const STAGE_2_SPAWN_POSITION = Vector2(1000, -95)
 
+@onready var attack_sound_player := $AttackSound     # tangkap node audio
+
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var attack_hitbox = $AttackHitbox/CollisionShape2D
 @onready var ui = get_node_or_null("/root/Game/UI")
@@ -113,18 +115,18 @@ func trigger_door_dialog() -> void:
 		print("Door dialog skipped: not new game or already triggered or dead")
 		return
 	has_triggered_door_dialog = true
-	var door_dialog_scene = preload("res://scenes/dialog_door.tscn")
-	door_dialog = door_dialog_scene.instantiate()
-	if get_parent() and is_inside_tree():
-		get_parent().add_child(door_dialog)
-		if door_dialog.is_inside_tree():
-			door_dialog.show_dialog()
-			print("Door dialog triggered at position:", global_position)
-		else:
-			door_dialog.call_deferred("show_dialog")
-			print("Door dialog deferred at position:", global_position)
-	else:
-		print("Error: Cannot show door dialog, Char not in scene tree")
+	#var door_dialog_scene = preload("res://scenes/dialog_door.tscn")
+	#door_dialog = door_dialog_scene.instantiate()
+	#if get_parent() and is_inside_tree():
+		#get_parent().add_child(door_dialog)
+		#if door_dialog.is_inside_tree():
+			#door_dialog.show_dialog()
+			#print("Door dialog triggered at position:", global_position)
+		#else:
+			#door_dialog.call_deferred("show_dialog")
+			#print("Door dialog deferred at position:", global_position)
+	#else:
+		#print("Error: Cannot show door dialog, Char not in scene tree")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and event is InputEventKey and health > 0 and not is_dead:
@@ -201,6 +203,7 @@ func _physics_process(delta: float) -> void:
 		attack_hitbox.disabled = false
 		var facing_direction = -1 if animated_sprite.flip_h else 1
 		attack_hitbox.position.x = abs(attack_hitbox.position.x) * facing_direction
+		attack_sound_player.play()
 		animated_sprite.play("attack")
 
 	var direction := Input.get_axis("move_left", "move_right")

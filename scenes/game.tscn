@@ -1,18 +1,20 @@
-[gd_scene load_steps=21 format=3 uid="uid://c1pjnwvydgrcv"]
+[gd_scene load_steps=23 format=3 uid="uid://c1pjnwvydgrcv"]
 
 [ext_resource type="PackedScene" uid="uid://bc6fpu4ipgqbb" path="res://scenes/char.tscn" id="1_k3l4v"]
 [ext_resource type="AudioStream" uid="uid://kvd2yocxub1i" path="res://assets/bgm.mp3" id="1_r3l4m"]
 [ext_resource type="Texture2D" uid="uid://fe5ehua03cx0" path="res://assets/background3.png" id="1_vkwhl"]
-[ext_resource type="Script" path="res://scripts/camera_2d.gd" id="2_wal6s"]
+[ext_resource type="Script" uid="uid://dacytap2pbxqh" path="res://scripts/camera_2d.gd" id="2_wal6s"]
 [ext_resource type="Texture2D" uid="uid://c1450haio525t" path="res://assets/mainlev_build.png" id="3_g7v0i"]
 [ext_resource type="PackedScene" uid="uid://d1py136bejhfl" path="res://scenes/kroco.tscn" id="4_5r80h"]
 [ext_resource type="PackedScene" uid="uid://e6f4yt5xtklj" path="res://scenes/ui.tscn" id="5_bpx5x"]
+[ext_resource type="AudioStream" uid="uid://xdhdimjx10tm" path="res://assets/sound_attack.mp3" id="6_trtic"]
 [ext_resource type="PackedScene" uid="uid://dnsguy3kgc8t6" path="res://scenes/bonfire.tscn" id="7_2t86i"]
 [ext_resource type="PackedScene" uid="uid://b7thk48hdxs7l" path="res://scenes/game_over.tscn" id="7_ltcro"]
 [ext_resource type="PackedScene" uid="uid://dwaeifk0bho21" path="res://scenes/kroco2.tscn" id="7_o7rn8"]
-[ext_resource type="Script" path="res://scripts/kill_zone.gd" id="10_801d0"]
-[ext_resource type="Script" path="res://scripts/door.gd" id="11_twoe5"]
-[ext_resource type="Script" path="res://scripts/dialog_trigger.gd" id="12_xyo2l"]
+[ext_resource type="AudioStream" uid="uid://dna3gux3t4bay" path="res://assets/enemy_appear.mp3" id="8_ir15t"]
+[ext_resource type="Script" uid="uid://bj0gykqh5oako" path="res://scripts/kill_zone.gd" id="10_801d0"]
+[ext_resource type="Script" uid="uid://capu0lsvg20j8" path="res://scripts/door.gd" id="11_twoe5"]
+[ext_resource type="Script" uid="uid://vfv6erh1fa4e" path="res://scripts/dialog_trigger.gd" id="12_xyo2l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bnwhx"]
 texture = ExtResource("3_g7v0i")
@@ -1082,26 +1084,50 @@ zoom = Vector2(3, 3)
 position_smoothing_speed = 60.0
 script = ExtResource("2_wal6s")
 
+[node name="AttackSound" type="AudioStreamPlayer2D" parent="Char"]
+stream = ExtResource("6_trtic")
+
 [node name="kroco" parent="." instance=ExtResource("4_5r80h")]
 position = Vector2(1888, 15)
+
+[node name="Enemy_Appear" type="AudioStreamPlayer2D" parent="kroco"]
+stream = ExtResource("8_ir15t")
 
 [node name="kroco2" parent="." instance=ExtResource("4_5r80h")]
 position = Vector2(501, -48)
 
+[node name="Enemy_Appear" type="AudioStreamPlayer2D" parent="kroco2"]
+stream = ExtResource("8_ir15t")
+
 [node name="kroco3" parent="." instance=ExtResource("4_5r80h")]
 position = Vector2(3688, -65)
+
+[node name="Enemy_Appear" type="AudioStreamPlayer2D" parent="kroco3"]
+stream = ExtResource("8_ir15t")
 
 [node name="kroco4" parent="." instance=ExtResource("7_o7rn8")]
 position = Vector2(9678, -49)
 
+[node name="Enemy_Appear" type="AudioStreamPlayer2D" parent="kroco4"]
+stream = ExtResource("8_ir15t")
+
 [node name="kroco5" parent="." instance=ExtResource("7_o7rn8")]
 position = Vector2(10405, 15)
+
+[node name="Enemy_Appear" type="AudioStreamPlayer2D" parent="kroco5"]
+stream = ExtResource("8_ir15t")
 
 [node name="kroco6" parent="." instance=ExtResource("7_o7rn8")]
 position = Vector2(11311, 17)
 
+[node name="Enemy_Appear" type="AudioStreamPlayer2D" parent="kroco6"]
+stream = ExtResource("8_ir15t")
+
 [node name="kroco7" parent="." instance=ExtResource("7_o7rn8")]
 position = Vector2(12029, -64)
+
+[node name="Enemy_Appear" type="AudioStreamPlayer2D" parent="kroco7"]
+stream = ExtResource("8_ir15t")
 
 [node name="UI" parent="." instance=ExtResource("5_bpx5x")]
 layer = 5

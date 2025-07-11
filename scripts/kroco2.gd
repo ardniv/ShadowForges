@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var attack_hitbox = $AttackHitbox
 @onready var attack_hitbox_shape = $AttackHitbox/CollisionShape2D
 @onready var detection_area = $DetectionArea
+@onready var enemy_appear := $Enemy_Appear
 
 const SPEED = 150.0
 const DETECTION_RANGE = 200.0
@@ -24,6 +25,7 @@ var attack_damage = 2
 
 func _ready() -> void:
 	animated_sprite.play("idle")
+	enemy_appear.play()
 	attack_hitbox_shape.disabled = true
 	initial_position = global_position
 	if detection_area:

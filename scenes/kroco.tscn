@@ -1,6 +1,6 @@
 [gd_scene load_steps=36 format=3 uid="uid://d1py136bejhfl"]
 
-[ext_resource type="Script" path="res://scripts/kroco.gd" id="1_lm8wy"]
+[ext_resource type="Script" uid="uid://b6i8l0io5v102" path="res://scripts/kroco.gd" id="1_lm8wy"]
 [ext_resource type="Texture2D" uid="uid://bnusflkpsv6op" path="res://assets/Skeleton_Warrior/Idle.png" id="1_rmfu4"]
 [ext_resource type="Texture2D" uid="uid://citi4dpv0mhwn" path="res://assets/Skeleton_Warrior/Dead.png" id="2_0i2v1"]
 [ext_resource type="Texture2D" uid="uid://dpc708y7ry87v" path="res://assets/Skeleton_Warrior/Attack_3.png" id="2_csats"]

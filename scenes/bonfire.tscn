@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://dnsguy3kgc8t6"]
 
 [ext_resource type="Texture2D" uid="uid://b1vx7ip83pbgi" path="res://assets/loops/burning_loop_2.png" id="1_jmgxe"]
-[ext_resource type="Script" path="res://scripts/bonfire.gd" id="2_4qoct"]
+[ext_resource type="Script" uid="uid://dcxkooe7trmco" path="res://scripts/bonfire.gd" id="2_4qoct"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5roun"]
 atlas = ExtResource("1_jmgxe")
