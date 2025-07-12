@@ -110,23 +110,17 @@ func trigger_dialog() -> void:
 	else:
 		print("Error: Cannot show dialog, Char not in scene tree")
 
-func trigger_door_dialog() -> void:
-	if not is_new_game or has_triggered_door_dialog or is_dead:
-		print("Door dialog skipped: not new game or already triggered or dead")
-		return
-	has_triggered_door_dialog = true
-	#var door_dialog_scene = preload("res://scenes/dialog_door.tscn")
-	#door_dialog = door_dialog_scene.instantiate()
-	#if get_parent() and is_inside_tree():
-		#get_parent().add_child(door_dialog)
-		#if door_dialog.is_inside_tree():
-			#door_dialog.show_dialog()
-			#print("Door dialog triggered at position:", global_position)
-		#else:
-			#door_dialog.call_deferred("show_dialog")
-			#print("Door dialog deferred at position:", global_position)
-	#else:
-		#print("Error: Cannot show door dialog, Char not in scene tree")
+func trigger_to_be_continued() -> void:
+	var to_be_continued_scene = preload("res://scenes/to_be_continued.tscn")
+	var to_be_continued = to_be_continued_scene.instantiate()
+	if get_parent() and is_inside_tree():
+		get_parent().add_child(to_be_continued)
+		if to_be_continued.is_inside_tree():
+			print("ToBeContinued UI triggered at position:", global_position)
+		else:
+			print("Error: ToBeContinued UI not in scene tree")
+	else:
+		print("Error: Cannot show ToBeContinued UI, Char not in scene tree")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and event is InputEventKey and health > 0 and not is_dead:
@@ -253,9 +247,9 @@ func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("door"):
 		nearby_door = area
 		print("Entered door area at:", area.global_position)
-	if area.is_in_group("door_dialog_trigger"):
-		trigger_door_dialog()
-		print("Entered door dialog trigger at:", area.global_position)
+	if area.name == "Door2":
+		trigger_to_be_continued()
+	
 
 func _on_area_exited(area: Area2D) -> void:
 	if area.is_in_group("door"):
